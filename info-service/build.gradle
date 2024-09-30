@@ -5,6 +5,16 @@ plugins {
 	id 'com.google.cloud.tools.jib' version '3.3.2' // Add Jib plugin
 }
 
+jib {
+	from {
+		image = 'gcr.io/distroless/java'  // Optional: base image, minimizing size
+	}
+	container {
+		jvmFlags = ['-Xms512m', '-Xmx1024m']  // Optional: JVM memory settings
+		ports = ['8080']  // Optional: Expose port 8080
+	}
+}
+
 group = 'com.czn'
 version = '0.0.1-SNAPSHOT'
 
