@@ -47,10 +47,7 @@ jobs:
     - name: Build and push Docker images
       # if: steps.changed-files.outputs.services != ''
       run: |
-        # for SERVICE in ${{ steps.changed-files.outputs.services }}; do
-          echo "Building and pushing info-sefvice"
+          echo "Building and pushing info-service"
           cd info-service
-          # Build minimized Docker image using gradle-docker-plugin
           ./gradlew clean build jibDockerBuild --image=docker.io/${{ secrets.DOCKER_USERNAME }}/info-service:latest
-          # cd ..
-        done
+  
