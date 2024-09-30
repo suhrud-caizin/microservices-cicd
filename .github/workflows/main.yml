@@ -44,11 +44,9 @@ jobs:
     #     echo "Changed services: ${SERVICES[@]}"
     #     echo "::set-output name=services::${SERVICES[@]}"
 
-    - name: Build and push Docker images
-      # if: steps.changed-files.outputs.services != ''
+    - name: Build and push Docker image
       run: |
           echo "Building and pushing info-service"
           cd info-service
           chmod +x ./gradlew
-          ./gradlew clean build jibDockerBuild --image=docker.io/${{ secrets.DOCKER_USERNAME }}/info-service:latest
-  
+          ./gradlew clean build jib --image=docker.io/${{ secrets.DOCKER_USERNAME }}/info-service:latest
