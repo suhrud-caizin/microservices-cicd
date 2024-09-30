@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      # - master
+       - master
 
 jobs:
   build:
@@ -31,18 +31,23 @@ jobs:
     - name: Determine changed services
       id: changed-services
       run: |
-         SERVICES=()
-         if git diff --name-only HEAD^ HEAD | grep 'catalogue-service/'; then
-           SERVICES+=('catalogue-service')
-         fi
-         if git diff --name-only HEAD^ HEAD | grep 'naming-service/'; then
-           SERVICES+=('naming-service')
-         fi
-         if git diff --name-only HEAD^ HEAD | grep 'info-service/'; then
-           SERVICES+=('info-service')
-         fi
-         echo "Changed services: ${SERVICES[@]}"
-         echo "::set-output name=services::${SERVICES[@]}"
+        SERVICES=""
+        # Use 'git rev-parse --verify HEAD^' to check if the previous commit exists
+        if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+        git diff --name-only HEAD^ HEAD | grep -q 'info-service/' && SERVICES+="info-service "
+        git diff --name-only HEAD^ HEAD | grep -q 'catalogue-service/' && SERVICES+="catalogue-service "
+        git diff --name-only HEAD^ HEAD | grep -q 'naming-service/' && SERVICES+="naming-service "
+        else
+        # Handle the case for the first commit or no previous commit
+        git ls-files | grep -q 'info-service/' && SERVICES+="info-service "
+        git ls-files | grep -q 'catalogue-service/' && SERVICES+="catalogue-service "
+        git ls-files | grep -q 'naming-service/' && SERVICES+="naming-service "
+        fi
+        echo "Changed services: $SERVICES"
+
+        # Write the output to an environment file (as `set-output` is deprecated)
+        echo "services=$SERVICES" >> $GITHUB_ENV
+
 
     - name: Build and push Docker images for changed services
       run: |
