@@ -6,12 +6,12 @@ plugins {
 }
 
 jib {
-	from {
-		image = 'gcr.io/distroless/java'  // Optional: base image, minimizing size
-	}
+//	from {
+//		image = 'gcr.io/distroless/java'  // Optional: base image, minimizing size
+//	}
 	container {
 		jvmFlags = ['-Xms512m', '-Xmx1024m']  // Optional: JVM memory settings
-		ports = ['8080']  // Optional: Expose port 8080
+		ports = [8080]  // Optional: Expose port 8080
 	}
 }
 
