@@ -49,5 +49,6 @@ jobs:
       run: |
           echo "Building and pushing info-service"
           cd info-service
+          chmod +x ./gradlew
           ./gradlew clean build jibDockerBuild --image=docker.io/${{ secrets.DOCKER_USERNAME }}/info-service:latest
   
