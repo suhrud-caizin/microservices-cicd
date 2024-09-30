@@ -1,4 +1,4 @@
-package dto;
+package com.czn.info_service.dto;
 
 public class Movie {
 
